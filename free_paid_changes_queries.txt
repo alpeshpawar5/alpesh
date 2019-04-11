@@ -1,0 +1,144 @@
+TOTAL
+ 
+ SQL->select * from
+      (SELECT lab_location,lab_type,to_char(lab_dt,'Month') Mon_only,
+    to_char(lab_dt,'yyyy') Year_only,
+    to_char(lab_dt,'Month-yyyy') Month1, D.LOCATION_TYPE Location_Type,E.COUNTRY_DESC Country,G.REGION_DESC Theater, Count(*) Labs
+    ,grouping(lab_location) a       ,grouping(lab_type) b ,grouping(to_char(lab_dt,'Month')) c ,   grouping( to_char(lab_dt,'yyyy')) d ,  
+    grouping( to_char(lab_dt,'Month-yyyy') ) e ,grouping(D.LOCATION_TYPE) f, grouping(E.COUNTRY_DESC) g ,grouping(G.REGION_DESC) h
+    FROM lab_info a,contact_info b,ccie_lab_location c, lab_location_type d,countries e, CCIE_LAB_REGION_COUNTRY f,CCIE_LAB_REGION g
+    WHERE lab_id=id
+    AND A.LAB_LOCATION = C.LAB_LOCATION_ID
+    AND C.LOCATION_TYPE_CD = D.LOCATION_TYPE_CD
+    AND C.CERTIFICATION_TYPE = D.CERTIFICATION_TYPE
+    AND C.COUNTRY_CD = E.COUNTRY_CD
+    AND E.COUNTRY_CD = F.COUNTRY_CD
+    AND F.REGION_CD = G.REGION_CD
+    AND upper(lab_type) != 'DROPPED'
+	AND upper(lab_id) != 'CLOSED'
+	AND upper(first_name)!= 'RESERVED'
+	AND upper(lab_id) != 'UNLOCKPAY'
+	AND upper(lab_id) != 'UNLOCKALL'
+	AND upper(lab_id) != 'HOLIDAY'
+	AND A.CERTIFICATION_TYPE = 'CCIE'
+    AND lab_dt >= to_date('01/01/2018','mm/dd/yyyy')
+    AND lab_dt <= to_date('06/11/2018','mm/dd/yyyy')
+    AND FIRST_NAME NOT LIKE '%Reserved%'
+    AND  LAST_NAME NOT LIKE '%Reserved%'
+    AND ID NOT LIKE '%dummy%'  GROUP BY
+    cube(lab_location,to_char(lab_dt,'Month'),lab_type,to_char(lab_dt,'yyyy'),to_char(lab_dt,'Month-yyyy'), 
+	D.LOCATION_TYPE,E.COUNTRY_DESC,G.REGION_DESC)
+    ORDER by lab_location,to_char(lab_dt,'Month-yyyy')
+ )  where (A=1 and B=1 and C=1 and D=1 and E=1 and F=1 and G=1 and H=1) OR (A=0 and B=0 and C=0 and D=0 and E=0 and F=0 and G=0 and H=0 ) 
+
+
+ ==========================================================================================================================================
+PAID
+
+ SQL->select * from
+      (SELECT lab_location,lab_type,to_char(lab_dt,'Month') Mon_only,
+    to_char(lab_dt,'yyyy') Year_only,
+    to_char(lab_dt,'Month-yyyy') Month1, D.LOCATION_TYPE Location_Type,E.COUNTRY_DESC Country,G.REGION_DESC Theater, Count(*) Labs
+    ,grouping(lab_location) a       ,grouping(lab_type) b ,grouping(to_char(lab_dt,'Month')) c ,   grouping( to_char(lab_dt,'yyyy')) d ,  
+    grouping( to_char(lab_dt,'Month-yyyy') ) e ,grouping(D.LOCATION_TYPE) f, grouping(E.COUNTRY_DESC) g ,grouping(G.REGION_DESC) h
+    FROM lab_info a,contact_info b,ccie_lab_location c, lab_location_type d,countries e, CCIE_LAB_REGION_COUNTRY f,CCIE_LAB_REGION g
+    WHERE lab_id=id
+    AND A.LAB_LOCATION = C.LAB_LOCATION_ID
+    AND C.LOCATION_TYPE_CD = D.LOCATION_TYPE_CD
+    AND C.CERTIFICATION_TYPE = D.CERTIFICATION_TYPE
+    AND C.COUNTRY_CD = E.COUNTRY_CD
+    AND E.COUNTRY_CD = F.COUNTRY_CD
+    AND F.REGION_CD = G.REGION_CD
+    AND upper(lab_type) != 'DROPPED'
+	AND upper(lab_id) != 'CLOSED'
+	AND upper(first_name)!= 'RESERVED'
+	AND upper(lab_id) != 'UNLOCKPAY'
+	AND upper(lab_id) != 'UNLOCKALL'
+	AND upper(lab_id) != 'HOLIDAY'
+	AND A.CERTIFICATION_TYPE = 'CCIE'
+    AND lab_dt >= to_date('01/01/2018','mm/dd/yyyy')
+    AND lab_dt <= to_date('06/11/2018','mm/dd/yyyy')
+    AND FIRST_NAME NOT LIKE '%Reserved%'
+    AND  LAST_NAME NOT LIKE '%Reserved%'
+    AND ID NOT LIKE '%dummy%'
+ AND TO_NUMBER(payment_amount) > 100 GROUP BY
+    cube(lab_location,to_char(lab_dt,'Month'),lab_type,to_char(lab_dt,'yyyy'),to_char(lab_dt,'Month-yyyy'), 
+	D.LOCATION_TYPE,E.COUNTRY_DESC,G.REGION_DESC)
+    ORDER by lab_location,to_char(lab_dt,'Month-yyyy')
+ )  where (A=1 and B=1 and C=1 and D=1 and E=1 and F=1 and G=1 and H=1) OR (A=0 and B=0 and C=0 and D=0 and E=0 and F=0 and G=0 and H=0 ) 
+
+ ==================================================================================================================
+ALL FREE
+
+
+SQL->select * from
+      (SELECT lab_location,lab_type,to_char(lab_dt,'Month') Mon_only,
+    to_char(lab_dt,'yyyy') Year_only,
+    to_char(lab_dt,'Month-yyyy') Month1, D.LOCATION_TYPE Location_Type,E.COUNTRY_DESC Country,G.REGION_DESC Theater, Count(*) Labs
+    ,grouping(lab_location) a       ,grouping(lab_type) b ,grouping(to_char(lab_dt,'Month')) c ,   grouping( to_char(lab_dt,'yyyy')) d ,  
+    grouping( to_char(lab_dt,'Month-yyyy') ) e ,grouping(D.LOCATION_TYPE) f, grouping(E.COUNTRY_DESC) g ,grouping(G.REGION_DESC) h
+    FROM lab_info a,contact_info b,ccie_lab_location c, lab_location_type d,countries e, CCIE_LAB_REGION_COUNTRY f,CCIE_LAB_REGION g
+    WHERE lab_id=id
+    AND A.LAB_LOCATION = C.LAB_LOCATION_ID
+    AND C.LOCATION_TYPE_CD = D.LOCATION_TYPE_CD
+    AND C.CERTIFICATION_TYPE = D.CERTIFICATION_TYPE
+    AND C.COUNTRY_CD = E.COUNTRY_CD
+    AND E.COUNTRY_CD = F.COUNTRY_CD
+    AND F.REGION_CD = G.REGION_CD
+    AND upper(lab_type) != 'DROPPED'
+	AND upper(lab_id) != 'CLOSED'
+	AND upper(first_name)!= 'RESERVED'
+	AND upper(lab_id) != 'UNLOCKPAY'
+	AND upper(lab_id) != 'UNLOCKALL'
+	AND upper(lab_id) != 'HOLIDAY'
+	AND A.CERTIFICATION_TYPE = 'CCIE'
+    AND lab_dt >= to_date('01/01/2018','mm/dd/yyyy')
+    AND lab_dt <= to_date('06/11/2018','mm/dd/yyyy')
+    AND FIRST_NAME NOT LIKE '%Reserved%'
+    AND  LAST_NAME NOT LIKE '%Reserved%'
+    AND ID NOT LIKE '%dummy%'
+    AND (( upper(a.payment_type) IN ('VOUCHER','NONE') ) OR ( TO_NUMBER(payment_amount) < 100 
+			  AND upper(a.payment_type) IN ('CREDIT CARD','WIRE TRANSFER','PENDING WIRE TRANSFER'))) GROUP BY
+    cube(lab_location,to_char(lab_dt,'Month'),lab_type,to_char(lab_dt,'yyyy'),to_char(lab_dt,'Month-yyyy'), 
+	D.LOCATION_TYPE,E.COUNTRY_DESC,G.REGION_DESC)
+    ORDER by lab_location,to_char(lab_dt,'Month-yyyy')
+ )  where (A=1 and B=1 and C=1 and D=1 and E=1 and F=1 and G=1 and H=1) OR (A=0 and B=0 and C=0 and D=0 and E=0 and F=0 and G=0 and H=0 ) 
+
+====================================================================================================================================
+
+EMPLOYEE FREE
+
+
+SQL->select * from
+      (SELECT lab_location,lab_type,to_char(lab_dt,'Month') Mon_only,
+    to_char(lab_dt,'yyyy') Year_only,
+    to_char(lab_dt,'Month-yyyy') Month1, D.LOCATION_TYPE Location_Type,E.COUNTRY_DESC Country,G.REGION_DESC Theater, Count(*) Labs
+    ,grouping(lab_location) a       ,grouping(lab_type) b ,grouping(to_char(lab_dt,'Month')) c ,   grouping( to_char(lab_dt,'yyyy')) d ,  
+    grouping( to_char(lab_dt,'Month-yyyy') ) e ,grouping(D.LOCATION_TYPE) f, grouping(E.COUNTRY_DESC) g ,grouping(G.REGION_DESC) h
+    FROM lab_info a,contact_info b,ccie_lab_location c, lab_location_type d,countries e, CCIE_LAB_REGION_COUNTRY f,CCIE_LAB_REGION g
+    WHERE lab_id=id
+    AND A.LAB_LOCATION = C.LAB_LOCATION_ID
+    AND C.LOCATION_TYPE_CD = D.LOCATION_TYPE_CD
+    AND C.CERTIFICATION_TYPE = D.CERTIFICATION_TYPE
+    AND C.COUNTRY_CD = E.COUNTRY_CD
+    AND E.COUNTRY_CD = F.COUNTRY_CD
+    AND F.REGION_CD = G.REGION_CD
+    AND upper(lab_type) != 'DROPPED'
+	AND upper(lab_id) != 'CLOSED'
+	AND upper(first_name)!= 'RESERVED'
+	AND upper(lab_id) != 'UNLOCKPAY'
+	AND upper(lab_id) != 'UNLOCKALL'
+	AND upper(lab_id) != 'HOLIDAY'
+	AND A.CERTIFICATION_TYPE = 'CCIE'
+    AND lab_dt >= to_date('01/01/2018','mm/dd/yyyy')
+    AND lab_dt <= to_date('06/11/2018','mm/dd/yyyy')
+    AND FIRST_NAME NOT LIKE '%Reserved%'
+    AND  LAST_NAME NOT LIKE '%Reserved%'
+    AND ID NOT LIKE '%dummy%'
+AND (( upper(a.payment_type) IN ('VOUCHER','NONE') ) OR ( TO_NUMBER(payment_amount) < 100 
+			  AND upper(a.payment_type) IN ('CREDIT CARD','WIRE TRANSFER','PENDING WIRE TRANSFER')))
+			  AND UPPER(a.employee_type) = 'REGULAR' GROUP BY
+    cube(lab_location,to_char(lab_dt,'Month'),lab_type,to_char(lab_dt,'yyyy'),to_char(lab_dt,'Month-yyyy'), 
+	D.LOCATION_TYPE,E.COUNTRY_DESC,G.REGION_DESC)
+    ORDER by lab_location,to_char(lab_dt,'Month-yyyy')
+ )  where (A=1 and B=1 and C=1 and D=1 and E=1 and F=1 and G=1 and H=1) OR (A=0 and B=0 and C=0 and D=0 and E=0 and F=0 and G=0 and H=0 ) 
